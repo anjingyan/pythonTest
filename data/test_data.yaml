@@ -1,0 +1,163 @@
+# 出入库系统测试数据
+# 用于数据驱动测试
+
+# ---------- 登录 ----------
+login:
+  valid:
+    username: admin
+    password: 1
+  invalid:
+    - username: ""
+      password: ""
+      expected_error: "用户名"
+    - username: admin
+      password: wrong
+      expected_error: "密码"
+    - username: nonexist
+      password: admin123
+      expected_error: "用户"
+
+# ---------- 入库 ----------
+inbound:
+  # 正常入库数据
+  valid_orders:
+    - order_no: "IN-TEST-001"
+      supplier: "深圳科技有限公司"
+      warehouse: "A001-主仓库"
+      product_code: "P001"
+      product_name: "螺丝刀套装"
+      quantity: "100"
+      unit: "套"
+      unit_price: "25"
+      total_amount: "2500"
+      inbound_date: "2026-05-07"
+      operator: "测试员"
+      remark: "自动化测试-正常入库1"
+
+    - order_no: "IN-TEST-002"
+      supplier: "上海电子材料公司"
+      warehouse: "B001-成品仓"
+      product_code: "P007"
+      product_name: "电脑主板"
+      quantity: "50"
+      unit: "块"
+      unit_price: "850"
+      total_amount: "42500"
+      inbound_date: "2026-05-07"
+      operator: "测试员"
+      remark: "自动化测试-正常入库2"
+
+    - order_no: "IN-TEST-003"
+      supplier: "北京精密仪器厂"
+      warehouse: "A002-原料仓"
+      product_code: "P005"
+      product_name: "润滑油"
+      quantity: "200"
+      unit: "桶"
+      unit_price: "280"
+      total_amount: "56000"
+      inbound_date: "2026-05-06"
+      operator: "测试员"
+      remark: "自动化测试-正常入库3"
+
+  # 入库边界/异常数据
+  edge_cases:
+    - case: "数量为负数"
+      order_no: "IN-EDGE-001"
+      quantity: "-10"
+      expect_success: false
+
+    - case: "数量为0"
+      order_no: "IN-EDGE-002"
+      quantity: "0"
+      expect_success: false
+
+    - case: "供应商为空"
+      order_no: "IN-EDGE-003"
+      supplier: ""
+      expect_success: false
+
+    - case: "商品为空"
+      order_no: "IN-EDGE-004"
+      product_code: ""
+      product_name: ""
+      expect_success: false
+
+    - case: "仓库为空"
+      order_no: "IN-EDGE-005"
+      warehouse: ""
+      expect_success: false
+
+# ---------- 出库 ----------
+outbound:
+  # 正常出库数据
+  valid_orders:
+    - order_no: "OUT-TEST-001"
+      customer: "华北销售部"
+      warehouse: "A001-主仓库"
+      product_code: "P001"
+      product_name: "螺丝刀套装"
+      quantity: "20"
+      unit: "套"
+      unit_price: "25"
+      total_amount: "500"
+      outbound_date: "2026-05-07"
+      order_type: "销售出库"
+      operator: "测试员"
+      remark: "自动化测试-正常出库1"
+
+    - order_no: "OUT-TEST-002"
+      customer: "华东分销中心"
+      warehouse: "B001-成品仓"
+      product_code: "P007"
+      product_name: "电脑主板"
+      quantity: "10"
+      unit: "块"
+      unit_price: "850"
+      total_amount: "8500"
+      outbound_date: "2026-05-07"
+      order_type: "销售出库"
+      operator: "测试员"
+      remark: "自动化测试-正常出库2"
+
+    - order_no: "OUT-TEST-003"
+      customer: "售后维修中心"
+      warehouse: "A002-原料仓"
+      product_code: "P005"
+      product_name: "润滑油"
+      quantity: "30"
+      unit: "桶"
+      unit_price: "280"
+      total_amount: "8400"
+      outbound_date: "2026-05-06"
+      order_type: "领料出库"
+      operator: "测试员"
+      remark: "自动化测试-正常出库3"
+
+  # 出库边界/异常数据
+  edge_cases:
+    - case: "数量为负数"
+      order_no: "OUT-EDGE-001"
+      quantity: "-5"
+      expect_success: false
+
+    - case: "数量为0"
+      order_no: "OUT-EDGE-002"
+      quantity: "0"
+      expect_success: false
+
+    - case: "客户为空"
+      order_no: "OUT-EDGE-003"
+      customer: ""
+      expect_success: false
+
+    - case: "商品为空"
+      order_no: "OUT-EDGE-004"
+      product_code: ""
+      product_name: ""
+      expect_success: false
+
+    - case: "出库类型为空"
+      order_no: "OUT-EDGE-005"
+      order_type: ""
+      expect_success: false
